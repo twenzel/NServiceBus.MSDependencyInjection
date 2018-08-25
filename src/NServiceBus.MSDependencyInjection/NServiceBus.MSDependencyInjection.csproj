@@ -5,6 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Toni Wenzel</Authors>
     <Company>CHG MERIDIAN AG</Company>
+    <Version>$(SemVer)</Version>
     <Description>Adapter for the Microsoft.Extensions.DependencyInjection IoC Container</Description>
     <PackageTags>nservicebus messaging dependency</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -15,7 +16,8 @@
     <PackageProjectUrl>https://github.com/twenzel/NServiceBus.MSDependencyInjection</PackageProjectUrl>
     <RepositoryUrl>https://github.com/twenzel/NServiceBus.MSDependencyInjection</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
-    <PackageLicenseUrl>https://github.com/twenzel/NServiceBus.MSDependencyInjection/blob/master/LICENSE</PackageLicenseUrl>    
+    <PackageLicenseUrl>https://github.com/twenzel/NServiceBus.MSDependencyInjection/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageId>NServiceBus.MSDependencyInjection</PackageId>    
   </PropertyGroup>
 
   <ItemGroup>

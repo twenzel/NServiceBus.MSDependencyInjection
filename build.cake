@@ -5,12 +5,10 @@ var target = Argument("target", "Default");
 //////////////////////////////////////////////////////////////////////
 //    Build Variables
 /////////////////////////////////////////////////////////////////////
-var solution = "./Cake.MarkdownToPdf.sln";
-var project = "./src/Cake.MarkdownToPdf/Cake.MarkdownToPdf.csproj";
+var solution = "./NServiceBus.MSDependencyInjection.sln";
+var project = "./src/NServiceBus.MSDependencyInjection/NServiceBus.MSDependencyInjection.csproj";
 var outputDir = "./buildArtifacts/";
-var outputDirAddin = outputDir+"Addin/";
 var outputDirNuget = outputDir+"NuGet/";
-var nuspecDir = "./nuspec/";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -47,14 +45,16 @@ Task("Build")
 	.IsDependentOn("Version")
     .Does(() => {
  		
-		var settings = new DotNetCorePublishSettings
-		 {			
-			 Configuration = "Release",
-			 OutputDirectory = outputDirAddin,
-			 ArgumentCustomization = args => args.Append("/p:SemVer=" + versionInfo.NuGetVersionV2)
-		 };
-		 
-		 DotNetCorePublish(project, settings);
+	var settings = new DotNetCoreBuildSettings
+     {        
+         Configuration = "Release",
+        
+		 ArgumentCustomization = args => args.Append("/p:SemVer=" + versionInfo.NuGetVersionV2)
+     };
+
+     DotNetCoreBuild(project, settings);
+		
+		
     });
 
 Task("Test")
@@ -73,14 +73,14 @@ Task("Pack")
 	.IsDependentOn("Version")
     .Does(() => {
         
-		var nuGetPackSettings = new NuGetPackSettings {	
-			Version = versionInfo.NuGetVersionV2,
-			BasePath = outputDirAddin,
-			OutputDirectory = outputDirNuget,
-			NoPackageAnalysis = true
-		};
-		
-		NuGetPack(nuspecDir + "Cake.MarkdownToPdf.nuspec", nuGetPackSettings);			
+		var packSettings = new DotNetCorePackSettings
+		 {			
+			 Configuration = "Release",
+			 OutputDirectory = outputDirNuget,
+			 ArgumentCustomization = args => args.Append("/p:PackageVersion=" + versionInfo.NuGetVersionV2)
+		 };
+		 
+		 DotNetCorePack(project, packSettings);			
     });
 
 Task("Default")
