@@ -49,7 +49,7 @@ Task("Build")
      {        
          Configuration = "Release",
         
-		 ArgumentCustomization = args => args.Append("/p:SemVer=" + versionInfo.NuGetVersionV2)
+		 ArgumentCustomization = args => args.Append("/p:SemVer=" + versionInfo.NuGetVersionV2 + " /p:SourceLinkCreate=true")
      };
 
      DotNetCoreBuild(project, settings);
@@ -77,7 +77,7 @@ Task("Pack")
 		 {			
 			 Configuration = "Release",
 			 OutputDirectory = outputDirNuget,
-			 ArgumentCustomization = args => args.Append("/p:PackageVersion=" + versionInfo.NuGetVersionV2)
+			 ArgumentCustomization = args => args.Append("/p:PackageVersion=" + versionInfo.NuGetVersionV2+ " /p:SourceLinkCreate=true")
 		 };
 		 
 		 DotNetCorePack(project, packSettings);			

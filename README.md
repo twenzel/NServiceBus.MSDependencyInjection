@@ -1,6 +1,6 @@
 # NServiceBus.MSDependencyInjection
 
-[![Build status](https://ci.appveyor.com/api/projects/status/p1cfl6vw040xyw3c?svg=true)](https://ci.appveyor.com/project/twenzel/cake-markdowntopdf) [![NuGet Version](http://img.shields.io/nuget/v/NServiceBus.ObjectBuilder.MSDependencyInjection.svg?style=flat)](https://www.nuget.org/packages/NServiceBus.ObjectBuilder.MSDependencyInjection/) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Build status](https://ci.appveyor.com/api/projects/status/p1cfl6vw040xyw3c?svg=true)](https://ci.appveyor.com/project/twenzel/nservicebus-msdependencyinjection) [![NuGet Version](http://img.shields.io/nuget/v/NServiceBus.MSDependencyInjection.svg?style=flat)](https://www.nuget.org/packages/NServiceBus.MSDependencyInjection/) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Support for the Microsoft.Extensions.DependencyInjection container.
 
