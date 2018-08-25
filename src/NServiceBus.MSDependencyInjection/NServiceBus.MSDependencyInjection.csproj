@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Toni Wenzel</Authors>
+    <Company>CHG MERIDIAN AG</Company>
+    <Description>Adapter for the Microsoft.Extensions.DependencyInjection IoC Container</Description>
+    <PackageTags>nservicebus messaging dependency</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AssemblyName>NServiceBus.ObjectBuilder.MSDependencyInjection</AssemblyName>
+    <RootNamespace>NServiceBus.ObjectBuilder.MSDependencyInjection</RootNamespace>
+    <PackageIconUrl>http://s3.amazonaws.com/nuget.images/NServiceBus_32.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/twenzel/NServiceBus.MSDependencyInjection</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/twenzel/NServiceBus.MSDependencyInjection</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageLicenseUrl>https://github.com/twenzel/NServiceBus.MSDependencyInjection/blob/master/LICENSE</PackageLicenseUrl>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="3.1.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Janitor.Fody" Version="1.6.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="NServiceBus" Version="[7.0.0, 8.0.0)" />
+    <PackageReference Include="Particular.CodeRules" Version="0.2.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SourceLink.Create.GitHub" Version="2.8.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
