@@ -8,7 +8,6 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
     internal class UpdateableServiceProvider : IServiceProvider, IServiceCollection, IDisposable
     {
         private IServiceProvider _serviceProvider;
-        private IServiceScope _scope;
         private readonly ServiceCollection _services;
 
         public int Count => _services.Count;
@@ -33,10 +32,7 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         }
 
         public object GetService(Type serviceType)
-        {
-            if (_scope != null)
-                return _scope.ServiceProvider.GetService(serviceType);
-
+        {           
             return _serviceProvider.GetService(serviceType);
         }
 
@@ -122,20 +118,6 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         public void Dispose()
         {
             // Injected at compile time
-        }
-
-        internal void BeginScope()
-        {
-            if (_scope != null)
-                throw new InvalidOperationException("Can't create new scope while another already was created");
-
-            _scope = _serviceProvider.CreateScope();
-        }
-
-        internal void EndScope()
-        {
-            _scope?.Dispose();
-            _scope = null;
-        }
+        }      
     }
 }

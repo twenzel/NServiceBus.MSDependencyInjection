@@ -14,6 +14,7 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         private readonly bool _owned;
         private readonly UpdateableServiceProvider _runtimeServiceProvider;
         private readonly IServiceCollection _services;
+        private readonly IServiceScope _scope;
 
         public ServicesObjectBuilder() : this(new ServiceCollection(), true)
         {
@@ -31,16 +32,13 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
             _owned = owned;
             _runtimeServiceProvider = new UpdateableServiceProvider(services);
             _services = services;
-
-            Initialize();
         }
 
         private ServicesObjectBuilder(bool owned, UpdateableServiceProvider updateableServiceProvider)
         {
             _owned = owned;
             _runtimeServiceProvider = updateableServiceProvider;
-
-            Initialize();
+            _scope = _runtimeServiceProvider.CreateScope();
         }
 
         public void Dispose()
@@ -60,6 +58,7 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
             {
                 (_services as IDisposable)?.Dispose();
             }
+            _scope?.Dispose();
         }
 
         public IContainer BuildChildContainer()
@@ -116,29 +115,19 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
             _runtimeServiceProvider.AddSingleton(lookupType, instance);
         }
 
-        /// <summary>
-        /// Starts a new scope of the component lifetime
-        /// </summary>
-        public void BeginScope()
-        {
-            _runtimeServiceProvider.BeginScope();
-        }
-
-        /// <summary>
-        /// Ends the current scope
-        /// </summary>
-        public void EndScope()
-        {
-            _runtimeServiceProvider.EndScope();
-        }
-
         public object Build(Type typeToBuild)
         {
+            if (_scope != null)
+                return _scope.ServiceProvider.GetService(typeToBuild);
+
             return _runtimeServiceProvider.GetService(typeToBuild);
         }
 
         public IEnumerable<object> BuildAll(Type typeToBuild)
         {
+            if (_scope != null)
+                return _scope.ServiceProvider.GetServices(typeToBuild);
+
             return _runtimeServiceProvider.GetServices(typeToBuild);
         }
 
@@ -150,12 +139,6 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         public void Release(object instance)
         {
             // no release logic
-        }
-
-        private void Initialize()
-        {
-            Configure(typeof(UnitOfWorkScope), DependencyLifecycle.InstancePerCall);
-            Configure<ServicesObjectBuilder>(() => this, DependencyLifecycle.InstancePerCall);
         }
 
         void ThrowIfCalledOnChildContainer()
