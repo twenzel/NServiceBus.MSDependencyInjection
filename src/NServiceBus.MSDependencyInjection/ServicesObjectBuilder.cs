@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NServiceBus.Logging;
-using NServiceBus.ObjectBuilder.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using NServiceBus.Logging;
+using NServiceBus.ObjectBuilder.Common;
 
 namespace NServiceBus.ObjectBuilder.MSDependencyInjection
 {
@@ -14,6 +14,7 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         private readonly bool _owned;
         private readonly UpdateableServiceProvider _runtimeServiceProvider;
         private readonly IServiceCollection _services;
+        private readonly IServiceScope _scope;
 
         public ServicesObjectBuilder() : this(new ServiceCollection(), true)
         {
@@ -37,6 +38,7 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         {
             _owned = owned;
             _runtimeServiceProvider = updateableServiceProvider;
+            _scope = _runtimeServiceProvider.CreateScope();
         }
 
         public void Dispose()
@@ -56,6 +58,7 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
             {
                 (_services as IDisposable)?.Dispose();
             }
+            _scope?.Dispose();
         }
 
         public IContainer BuildChildContainer()
@@ -114,11 +117,17 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
 
         public object Build(Type typeToBuild)
         {
+            if (_scope != null)
+                return _scope.ServiceProvider.GetService(typeToBuild);
+
             return _runtimeServiceProvider.GetService(typeToBuild);
         }
 
         public IEnumerable<object> BuildAll(Type typeToBuild)
         {
+            if (_scope != null)
+                return _scope.ServiceProvider.GetServices(typeToBuild);
+
             return _runtimeServiceProvider.GetServices(typeToBuild);
         }
 

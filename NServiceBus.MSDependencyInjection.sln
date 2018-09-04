@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NServiceBus.MSDependencyInj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NServiceBus.MSDependencyInjection.AcceptanceTests", "tests\NServiceBus.MSDependencyInjection.AcceptanceTests\NServiceBus.MSDependencyInjection.AcceptanceTests.csproj", "{C1725B29-5A54-47A1-ADF2-461BD1D10199}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Core", "samples\AspNetCoreSample\Sample.Core.csproj", "{D5ED1312-5D74-45E1-BEE7-C6C414ADFA64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C1725B29-5A54-47A1-ADF2-461BD1D10199}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1725B29-5A54-47A1-ADF2-461BD1D10199}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1725B29-5A54-47A1-ADF2-461BD1D10199}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5ED1312-5D74-45E1-BEE7-C6C414ADFA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5ED1312-5D74-45E1-BEE7-C6C414ADFA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5ED1312-5D74-45E1-BEE7-C6C414ADFA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5ED1312-5D74-45E1-BEE7-C6C414ADFA64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

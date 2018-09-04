@@ -32,7 +32,7 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         }
 
         public object GetService(Type serviceType)
-        {
+        {           
             return _serviceProvider.GetService(serviceType);
         }
 
@@ -112,13 +112,12 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
 
         private void UpdateServiceProvider()
         {
-            _serviceProvider = _services.BuildServiceProvider();
+            _serviceProvider = _services.BuildServiceProvider(true);
         }
 
         public void Dispose()
         {
             // Injected at compile time
-        }
-
+        }      
     }
 }

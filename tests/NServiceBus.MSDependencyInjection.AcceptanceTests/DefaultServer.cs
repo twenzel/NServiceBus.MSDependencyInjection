@@ -1,4 +1,5 @@
-﻿using NServiceBus.AcceptanceTesting.Customization;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NServiceBus.AcceptanceTesting.Customization;
 using NServiceBus.AcceptanceTesting.Support;
 using NServiceBus.Features;
 using NServiceBus.Hosting.Helpers;
@@ -14,15 +15,21 @@ namespace NServiceBus.AcceptanceTests.EndpointTemplates
     public class DefaultServer : IEndpointSetupTemplate
     {
         private readonly List<Type> _typesToInclude;
+        private IServiceCollection _services = null;
 
-        public DefaultServer()
+        public DefaultServer() 
         {
             _typesToInclude = new List<Type>();
         }
 
-        public DefaultServer(List<Type> typesToInclude)
+        public DefaultServer(List<Type> typesToInclude) 
         {
             _typesToInclude = typesToInclude;
+        }
+
+        public void SetServices(IServiceCollection services)
+        {
+            _services = services;
         }
 
         public Task<EndpointConfiguration> GetConfiguration(RunDescriptor runDescriptor, EndpointCustomizationConfiguration endpointConfiguration, Action<EndpointConfiguration> configurationBuilderCustomization)
@@ -39,7 +46,10 @@ namespace NServiceBus.AcceptanceTests.EndpointTemplates
             builder.UseTransport<LearningTransport>();
             builder.DisableFeature<TimeoutManager>();
             builder.UsePersistence<InMemoryPersistence>();
-            builder.UseContainer<ServicesBuilder>();
+            if (_services != null)
+                builder.UseContainer<ServicesBuilder>(c => c.ExistingServices(_services));
+            else
+                builder.UseContainer<ServicesBuilder>();
 
             builder.Recoverability().Immediate(immediateRetries => immediateRetries.NumberOfRetries(0));
             builder.Recoverability().Delayed(delayedRetires => delayedRetires.NumberOfRetries(0));
@@ -47,7 +57,6 @@ namespace NServiceBus.AcceptanceTests.EndpointTemplates
             builder.RegisterComponents(r => { RegisterInheritanceHierarchyOfContextOnContainer(runDescriptor, r); });
 
             configurationBuilderCustomization(builder);
-
 
             return Task.FromResult(builder);
         }
