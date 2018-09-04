@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NServiceBus.Logging;
-using NServiceBus.ObjectBuilder.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using NServiceBus.Logging;
+using NServiceBus.ObjectBuilder.Common;
 
 namespace NServiceBus.ObjectBuilder.MSDependencyInjection
 {
@@ -31,12 +31,16 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
             _owned = owned;
             _runtimeServiceProvider = new UpdateableServiceProvider(services);
             _services = services;
+
+            Initialize();
         }
 
         private ServicesObjectBuilder(bool owned, UpdateableServiceProvider updateableServiceProvider)
         {
             _owned = owned;
             _runtimeServiceProvider = updateableServiceProvider;
+
+            Initialize();
         }
 
         public void Dispose()
@@ -112,6 +116,22 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
             _runtimeServiceProvider.AddSingleton(lookupType, instance);
         }
 
+        /// <summary>
+        /// Starts a new scope of the component lifetime
+        /// </summary>
+        public void BeginScope()
+        {
+            _runtimeServiceProvider.BeginScope();
+        }
+
+        /// <summary>
+        /// Ends the current scope
+        /// </summary>
+        public void EndScope()
+        {
+            _runtimeServiceProvider.EndScope();
+        }
+
         public object Build(Type typeToBuild)
         {
             return _runtimeServiceProvider.GetService(typeToBuild);
@@ -130,6 +150,12 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         public void Release(object instance)
         {
             // no release logic
+        }
+
+        private void Initialize()
+        {
+            Configure(typeof(UnitOfWorkScope), DependencyLifecycle.InstancePerCall);
+            Configure<ServicesObjectBuilder>(() => this, DependencyLifecycle.InstancePerCall);
         }
 
         void ThrowIfCalledOnChildContainer()
