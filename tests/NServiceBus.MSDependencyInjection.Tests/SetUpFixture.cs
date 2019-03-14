@@ -2,14 +2,11 @@
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
 using NUnit.Framework;
 
-namespace NServiceBus.MSDependencyInjection.Tests
+[SetUpFixture]
+public class SetUpFixture
 {
-    [SetUpFixture]
-    public class SetUpFixture
+    public SetUpFixture()
     {
-        public SetUpFixture()
-        {
-            TestContainerBuilder.ConstructBuilder = () => new ServicesObjectBuilder();
-        }
+        TestContainerBuilder.ConstructBuilder = () => new ServicesObjectBuilder();
     }
 }
