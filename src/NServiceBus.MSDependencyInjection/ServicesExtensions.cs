@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Container;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
 
 namespace NServiceBus
 {
@@ -16,6 +18,11 @@ namespace NServiceBus
         public static void ExistingServices(this ContainerCustomizations customizations, IServiceCollection services)
         {
             customizations.Settings.Set<ServicesBuilder.CollectionHolder>(new ServicesBuilder.CollectionHolder(services));
+        }
+
+        public static void ServiceProviderFactory(this ContainerCustomizations customizations, Func<IServiceCollection, UpdateableServiceProvider> serviceProviderFactory)
+        {
+            customizations.Settings.Set<Func<IServiceCollection, UpdateableServiceProvider>>(serviceProviderFactory);
         }
     }
 }

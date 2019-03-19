@@ -16,22 +16,22 @@ namespace NServiceBus.ObjectBuilder.MSDependencyInjection
         private readonly IServiceCollection _services;
         private readonly IServiceScope _scope;
 
-        public ServicesObjectBuilder() : this(new ServiceCollection(), true)
+        public ServicesObjectBuilder(Func<IServiceCollection, UpdateableServiceProvider> serviceProviderFactory) : this(new ServiceCollection(), true, serviceProviderFactory)
         {
         }
 
-        public ServicesObjectBuilder(IServiceCollection services) : this(services, false)
+        public ServicesObjectBuilder(IServiceCollection services, Func<IServiceCollection, UpdateableServiceProvider> serviceProviderFactory) : this(services, false, serviceProviderFactory)
         {
         }
 
-        public ServicesObjectBuilder(IServiceCollection services, bool owned)
+        public ServicesObjectBuilder(IServiceCollection services, bool owned, Func<IServiceCollection, UpdateableServiceProvider> serviceProviderFactory)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services), "The object builder must be initialized with a valid service collection instance.");
 
             _owned = owned;
-            _runtimeServiceProvider = new UpdateableServiceProvider(services);
             _services = services;
+            _runtimeServiceProvider = serviceProviderFactory(_services);
         }
 
         private ServicesObjectBuilder(bool owned, UpdateableServiceProvider updateableServiceProvider)

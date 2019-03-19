@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using NServiceBus.Container;
 using NServiceBus.ObjectBuilder.Common;
 using NServiceBus.ObjectBuilder.MSDependencyInjection;
@@ -19,6 +20,12 @@ namespace NServiceBus
         public override IContainer CreateContainer(ReadOnlySettings settings)
         {
             CollectionHolder containerHolder;
+            Func<IServiceCollection, UpdateableServiceProvider> serviceProviderFactory = null;
+
+            if (!settings.TryGet(out serviceProviderFactory))
+            {
+                serviceProviderFactory = sc => new UpdateableServiceProvider(sc);
+            }
 
             if (settings.TryGet(out containerHolder))
             {
@@ -27,7 +34,7 @@ namespace NServiceBus
                     UsingExistingCollection = true
                 });
 
-                return new ServicesObjectBuilder(containerHolder.ExistingCollection);
+                return new ServicesObjectBuilder(containerHolder.ExistingCollection, serviceProviderFactory);
             }
 
             settings.AddStartupDiagnosticsSection("NServiceBus.Extensions.DependencyInjection", new
@@ -35,7 +42,7 @@ namespace NServiceBus
                 UsingExistingCollection = false
             });
 
-            return new ServicesObjectBuilder();
+            return new ServicesObjectBuilder(serviceProviderFactory);
         }
 
         internal class CollectionHolder

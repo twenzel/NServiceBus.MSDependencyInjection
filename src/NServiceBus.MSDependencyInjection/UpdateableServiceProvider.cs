@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace NServiceBus.ObjectBuilder.MSDependencyInjection
 {
-    internal class UpdateableServiceProvider : IServiceProvider, IServiceCollection, IDisposable
+    public class UpdateableServiceProvider : IServiceProvider, IServiceCollection, IDisposable
     {
         private IServiceProvider _serviceProvider;
         private readonly ServiceCollection _services;
