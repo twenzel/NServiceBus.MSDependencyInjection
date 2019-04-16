@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NServiceBus.ObjectBuilder.MSDependencyInjection;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using NServiceBus.ObjectBuilder.MSDependencyInjection;
+using NUnit.Framework;
 
 namespace NServiceBus.MSDependencyInjection.Tests
 {
@@ -15,7 +15,7 @@ namespace NServiceBus.MSDependencyInjection.Tests
         {
             var fakesServiceProvider = new FakeServiceProvider();
 
-            var container = new ServicesObjectBuilder(fakesServiceProvider, true);
+            var container = new ServicesObjectBuilder(fakesServiceProvider, true, sc => new UpdateableServiceProvider(sc));
             container.Dispose();
 
             Assert.True(fakesServiceProvider.Disposed);
@@ -26,7 +26,7 @@ namespace NServiceBus.MSDependencyInjection.Tests
         {
             var fakesServiceProvider = new FakeServiceProvider();
 
-            var container = new ServicesObjectBuilder(fakesServiceProvider, false);
+            var container = new ServicesObjectBuilder(fakesServiceProvider, false, sc => new UpdateableServiceProvider(sc));
             container.Dispose();
 
             Assert.False(fakesServiceProvider.Disposed);

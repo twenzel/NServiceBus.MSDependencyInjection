@@ -9,7 +9,7 @@ namespace NServiceBus.MSDependencyInjection.Tests
     {
         public SetUpFixture()
         {
-            TestContainerBuilder.ConstructBuilder = () => new ServicesObjectBuilder();
+            TestContainerBuilder.ConstructBuilder = () => new ServicesObjectBuilder(sc => new UpdateableServiceProvider(sc));
         }
     }
 }

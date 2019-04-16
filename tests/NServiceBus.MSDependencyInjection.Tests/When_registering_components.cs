@@ -13,7 +13,7 @@ namespace NServiceBus.MSDependencyInjection.Tests
             var services = new ServiceCollection();
             services.AddTransient(typeof(DependentType));
 
-            using (var builder = new ServicesObjectBuilder(services))
+            using (var builder = new ServicesObjectBuilder(services, sc => new UpdateableServiceProvider(sc)))
             {
                 builder.Configure(typeof(RequestingType), DependencyLifecycle.InstancePerCall);
 
