@@ -7,7 +7,7 @@ Support for the Microsoft.Extensions.DependencyInjection container.
 ## Usage
 
 ```CSharp
-public IServiceProvider ConfigureServices(IServiceCollection services)
+public void ConfigureServices(IServiceCollection services)
 {
     // register any services to IServiceCollection
     // ...
@@ -20,6 +20,33 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
         });
 
     endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
+}
+```
+
+To share the used service provide across (ASP) .NET Core and NServiceBus (recommended) you need to return the created service provider.
+```CSharp
+public IServiceProvider ConfigureServices(IServiceCollection services)
+{
+    // register any services to IServiceCollection
+    // ...
+
+    var endpointConfiguration = new EndpointConfiguration("Sample.Core");
+    endpointConfiguration.UseTransport<LearningTransport>();
+
+    UpdateableServiceProvider container = null;
+    endpointConfiguration.UseContainer<ServicesBuilder>(customizations =>
+        {
+            customizations.ExistingServices(services);
+            customizations.ServiceProviderFactory(sc => 
+            {
+                container = new UpdateableServiceProvider(sc);
+                return container;
+            });
+        });
+
+    endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
+
+    return container;
 }
 ```
 

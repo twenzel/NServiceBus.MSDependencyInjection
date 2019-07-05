@@ -25,7 +25,7 @@ namespace Sample.Core
                     customizations.ExistingServices(services);
                 });
 
-            endpoint = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
+            endpoint = NServiceBus.Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
         }
 
         #endregion
